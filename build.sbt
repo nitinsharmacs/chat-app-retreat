@@ -5,5 +5,7 @@ ThisBuild / scalaVersion := "3.3.0"
 lazy val root = (project in file("."))
   .settings(
     name := "chat-app-retreat",
-    idePackagePrefix := Some("com.tw.e4r")
+    libraryDependencies ++= Seq(
+      "com.linecorp.armeria" %% "armeria-scala" % "1.24.2"
+    )
   )
