@@ -7,12 +7,13 @@ import com.tw.e4r.repository.ChatRepository
 import com.tw.e4r.services.ChatService
 import org.slf4j.{Logger, LoggerFactory}
 
+import java.util.concurrent.Executors
 import scala.concurrent.ExecutionContext
 import concurrent.ExecutionContext.Implicits.global
 
 object Main:
   private val logger: Logger = LoggerFactory.getLogger(this.getClass)
-  given ec: ExecutionContext = ExecutionContext.global
+  given ec: ExecutionContext = ExecutionContext.fromExecutor(Executors.newFixedThreadPool(12))
   def main(args: Array[String]): Unit =
     val port: Int      = 8000
     val server: Server = newServer(port)

@@ -1,0 +1,22 @@
+.login-screen {
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  padding: 2em;
+  row-gap: 1em;
+}
+
+.login-screen input,
+.login-screen button {
+  padding: 1em 2em;
+  font-size: 1em;
+}
+
+.login-screen h2 {
+  text-align: center;
+  margin: 0;
+}

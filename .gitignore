@@ -4,3 +4,5 @@ hs_err_pid*
 .bsp
 .idea
 target
+node_modules/
+build/
