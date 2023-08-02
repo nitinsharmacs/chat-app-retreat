@@ -8,3 +8,6 @@ import scala.concurrent.Future
 class ChatService(chatRepository: ChatRepository):
   def getMessages: Future[List[Message]] =
     chatRepository.getMessages
+
+  def createMessage(message: Message): Future[Unit] =
+    chatRepository.addMessage(message)
