@@ -6,6 +6,7 @@ lazy val root = (project in file("."))
   .settings(
     name := "chat-app-retreat",
     libraryDependencies ++= Seq(
-      "com.linecorp.armeria" %% "armeria-scala" % "1.24.2"
+      "com.linecorp.armeria" %% "armeria-scala" % "1.24.2",
+      "com.linecorp.armeria" % "armeria-logback" % "1.24.2"
     )
   )
