@@ -2,7 +2,7 @@ package com.tw.e4r
 
 import com.linecorp.armeria.common.{HttpResponse, HttpStatus}
 import com.linecorp.armeria.server.{Server, ServerBuilder}
-import com.tw.e4r.core.controller.ChatController
+import com.tw.e4r.controller.ChatController
 import com.tw.e4r.repository.ChatRepository
 import com.tw.e4r.services.ChatService
 import org.slf4j.{Logger, LoggerFactory}
