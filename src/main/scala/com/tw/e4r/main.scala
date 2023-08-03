@@ -1,12 +1,15 @@
 package com.tw.e4r
 
-import com.linecorp.armeria.common.{HttpResponse, HttpStatus}
+import com.linecorp.armeria.common.{HttpMethod, HttpResponse, HttpStatus}
+import com.linecorp.armeria.server.cors.CorsService
+import com.linecorp.armeria.server.websocket.WebSocketService
 import com.linecorp.armeria.server.{Server, ServerBuilder}
-import com.tw.e4r.controller.ChatController
+import com.tw.e4r.controller.{ChatController, WebSocketHandler}
 import com.tw.e4r.repository.ChatRepository
 import com.tw.e4r.services.ChatService
 import org.slf4j.{Logger, LoggerFactory}
 
+import java.time.Duration
 import java.util.concurrent.Executors
 import scala.concurrent.ExecutionContext
 import concurrent.ExecutionContext.Implicits.global
@@ -23,8 +26,16 @@ object Main:
 
   private def newServer(port: Int) =
     val serverBuilder: ServerBuilder = Server.builder()
+    val webSocketHandler             = new WebSocketHandler(using ec)
+
+    val corsService = CorsService.builderForAnyOrigin.allowCredentials
+      .allowRequestMethods(HttpMethod.POST, HttpMethod.GET, HttpMethod.UNKNOWN)
+      .allowRequestHeaders("*")
+      .newDecorator
+
     serverBuilder
       .http(port)
+      .decorator(corsService)
       .decorator { (delegate, ctx, req) =>
         val url: String    = ctx.path()
         val method: String = ctx.method().toString
@@ -32,6 +43,17 @@ object Main:
         logger.info(s"Request|Url: $url|method: $method")
         delegate.serve(ctx, req)
       }
-      .service("/", (ctx, req) => HttpResponse.of(HttpStatus.OK))
-      .annotatedService("/e4r", ChatController(ChatService(new ChatRepository)))
+      .service(
+        "/socket",
+        WebSocketService.builder(webSocketHandler).allowedOrigins("*").build()
+      )
+      .service(
+        "/",
+        (ctx, req) => HttpResponse.of(HttpStatus.OK)
+      )
+      .annotatedService(
+        "/e4r",
+        ChatController(ChatService(new ChatRepository))(using ec, webSocketHandler)
+      )
+      .requestTimeout(Duration.ofSeconds(1000))
       .build()

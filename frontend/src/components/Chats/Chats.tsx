@@ -2,16 +2,34 @@ import { useEffect, useRef, useState } from 'react';
 import { ChatAppProps, Message } from '../../Types';
 import './chats.css';
 
-const Chats = ({ chatService }: ChatAppProps) => {
+const Chats = ({ chatService, username }: ChatAppProps) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const messageRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    setInterval(async () => {
+    // setInterval(async () => {
+    //   setMessages(await chatService.getMessages());
+    //   if (messageRef.current)
+    //     messageRef.current.scrollTop = messageRef.current.scrollHeight;
+    // }, 1000);
+
+    const a = async () => {
       setMessages(await chatService.getMessages());
-      if (messageRef.current)
-        messageRef.current.scrollTop = messageRef.current.scrollHeight;
-    }, 1000);
+      const socket = new WebSocket(`ws://localhost:8000/socket?id=${username}`);
+      socket.addEventListener('open', (event) => {
+        // socket.send('Hello Server!');
+      });
+
+      // Listen for messages
+      socket.addEventListener('message', (event) => {
+        console.log('Message from server ', event.data);
+        const message = JSON.parse(event.data);
+        setMessages((prev) => [...prev, message]);
+        if (messageRef.current)
+          messageRef.current.scrollTop = messageRef.current.scrollHeight;
+      });
+    };
+    a();
   }, []);
 
   return (

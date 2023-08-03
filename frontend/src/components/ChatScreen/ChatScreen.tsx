@@ -17,7 +17,7 @@ const ChatScreen = ({ chatService, username }: ChatAppProps) => {
   return (
     <div className='chat-page'>
       <div className='chat-wrapper'>
-        <Chats chatService={chatService} />
+        <Chats chatService={chatService} username={username} />
         <CreateChat handleSendMessage={handleSendMessage}></CreateChat>
       </div>
     </div>
