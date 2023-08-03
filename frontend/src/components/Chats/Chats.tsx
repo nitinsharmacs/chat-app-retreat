@@ -6,13 +6,13 @@ const Chats = ({ chatService }: ChatAppProps) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const messageRef = useRef<HTMLDivElement>(null);
 
-  // useEffect(() => {
-  //   setInterval(async () => {
-  //     setMessages(await chatService.getMessages());
-  //     if (messageRef.current)
-  //       messageRef.current.scrollTop = messageRef.current.scrollHeight;
-  //   }, 1000);
-  // }, []);
+  useEffect(() => {
+    setInterval(async () => {
+      setMessages(await chatService.getMessages());
+      if (messageRef.current)
+        messageRef.current.scrollTop = messageRef.current.scrollHeight;
+    }, 1000);
+  }, []);
 
   return (
     <div className='chat-messages' ref={messageRef}>
