@@ -11,7 +11,7 @@ const Chats = ({ chatService }: ChatAppProps) => {
       setMessages(await chatService.getMessages());
       if (messageRef.current)
         messageRef.current.scrollTop = messageRef.current.scrollHeight;
-    }, 1000);
+    }, 100);
   }, []);
 
   return (
