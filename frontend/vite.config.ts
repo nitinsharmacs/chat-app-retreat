@@ -13,6 +13,10 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/backend/, ''),
       },
+      '/ws': {
+        target: 'ws://localhost:8000/socket',
+        ws: true,
+      },
     },
   },
 });
